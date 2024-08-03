@@ -130,7 +130,7 @@ class PlaceControllerTest extends TestCase
         $response = $this->deleteJson("http://localhost:8085/api/place/delete/{$place->id}");
 
         $response->assertStatus(200)
-                ->assertJson(['message' => 'excluido com sucesso']);
+                ->assertJson(['message' => 'successfully deleted']);
 
         $this->assertSoftDeleted('places', ['id' => $place->id]);
     }
