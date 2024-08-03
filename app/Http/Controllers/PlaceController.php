@@ -40,20 +40,16 @@ class PlaceController extends Controller
     public function search(Request $request)
     {
 
-        // Verificar se o parâmetro 'name' está presente
         if ($request->has('name')) {
             $name = $request->input('name');
-            \Log::info('Name parameter: ' . $name);
 
-            // Fazer a consulta no banco de dados
             $places = Place::where('name', 'like', '%' . $name . '%')->get();
         } else {
-            // Retornar todos os lugares se 'name' não for fornecido
             $places = Place::all();
         }
 
         return response()->json($places);
-    
+
     }
 
     public function store(Request $request)
