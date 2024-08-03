@@ -28,9 +28,9 @@ class PlaceController extends Controller
         }
     }
 
-    public function show(Request $request)
+    public function show($id)
     {
-        $place = Place::find($request->id);
+        $place = Place::find($id);
 
         if ($place) {
             return response()->json($place);
@@ -41,17 +41,13 @@ class PlaceController extends Controller
 
     public function search(Request $request)
     {
+        $name = $request->input('name'); 
 
-        $query = Place::query();
-
-        if ($request->has('name')) {
-            $query->where('name', 'like', '%' . $request->input('name') . '%');
-        }
+        $query = $places = Place::where('name', 'like', '%' . $name . '%');
 
         $places = $query->get();
 
         return response()->json($places);
-
     }
 
     public function store(Request $request)
