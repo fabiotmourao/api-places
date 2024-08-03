@@ -6,6 +6,8 @@ use App\Models\Place;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Validators\PlaceValidation;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class PlaceController extends Controller
 {
@@ -26,9 +28,9 @@ class PlaceController extends Controller
         }
     }
 
-    public function show($id)
+    public function show(Request $request)
     {
-        $place = Place::find($id);
+        $place = Place::find($request->id);
 
         if ($place) {
             return response()->json($place);
@@ -40,13 +42,13 @@ class PlaceController extends Controller
     public function search(Request $request)
     {
 
-        if ($request->has('name')) {
-            $name = $request->input('name');
+        $query = Place::query();
 
-            $places = Place::where('name', 'like', '%' . $name . '%')->get();
-        } else {
-            $places = Place::all();
+        if ($request->has('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
         }
+
+        $places = $query->get();
 
         return response()->json($places);
 
