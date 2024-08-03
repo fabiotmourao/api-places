@@ -26,6 +26,30 @@ class PlaceController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        $place = Place::find($id);
+
+        if ($place) {
+            return response()->json($place);
+        } else {
+            return response()->json(['message' => 'Place not found'], 404);
+        }
+    }
+
+    public function search(Request $request)
+    {
+        $query = Place::query();
+
+        if ($request->has('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        $places = $query->get();
+
+        return response()->json($places);
+    }
+
     public function store(Request $request)
     {
         $validator = PlaceValidation::validate($request->all());
