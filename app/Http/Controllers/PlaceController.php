@@ -81,7 +81,7 @@ class PlaceController extends Controller
         }
     }
 
-    public function delete(Request $request, $id)
+    public function delete($id)
     {
         try {
             $place = Place::find($id);
